@@ -1,9 +1,9 @@
-📚 Student Management System (Full Stack Project)
+# 📚 Student Management System (Full Stack Project)
 
 A complete Full-Stack Student Management System built using Java, MySQL, PHP, HTML, CSS, and JavaScript.
 This project demonstrates OOP concepts, database integration, API development, and a modern responsive web UI.
 
-✨ Features
+## ✨ Features
 🖥 Java Application (Backend Logic)
 
 Add, delete, view, and search students
@@ -20,7 +20,7 @@ Average %
 
 Grade (A+, A, B, C, D, F)
 
-🗄 MySQL / MariaDB Database
+## 🗄 MySQL / MariaDB Database
 
 Fully persistent database storage
 
@@ -28,7 +28,7 @@ Table: students
 
 Stores all marks, totals, averages, and grade
 
-🌐 PHP REST API
+## 🌐 PHP REST API
 
 Handles all CRUD operations:
 
@@ -42,7 +42,7 @@ POST /api.php?action=deleteAll
 
 Used by the frontend to communicate with MySQL.
 
-🎨 Modern Frontend (HTML + CSS + JS)
+## 🎨 Modern Frontend (HTML + CSS + JS)
 
 Dashboard-style UI
 
@@ -56,7 +56,7 @@ Dynamic delete
 
 Responsive layout
 
-📁 Project Structure
+## 📁 Project Structure
 StudentManagement/
 │
 ├── Student.java                 # OOP class for student data
@@ -72,7 +72,7 @@ StudentManagement/
 │
 └── README.md                    # Project documentation
 
-🧩 Student Class Details
+## 🧩 Student Class Details
 Fields
 
 name (String)
@@ -95,7 +95,7 @@ calculateGrade()
 
 Getters for all fields
 
-🧮 Grading Scale
+## 🧮 Grading Scale
 Average	Grade
 90–100	A+
 80–89	A
@@ -116,52 +116,52 @@ DBeaver (optional UI viewer)
 
 VS Code (for editing)
 
-⚙️ Setup Instructions
-1️⃣ Install Java (Fedora)
-sudo dnf install java-latest-openjdk java-latest-openjdk-devel
+## ⚙️ Setup Instructions
+#### 1️⃣ Install Java (Fedora)
+```sudo dnf install java-latest-openjdk java-latest-openjdk-devel```
 
 
 Check:
 
-java --version
-javac --version
+```java --version```
+```javac --version```
 
-2️⃣ Install MySQL / MariaDB
-sudo dnf install mariadb mariadb-server
-sudo systemctl enable --now mariadb
+#### 2️⃣ Install MySQL / MariaDB
+```sudo dnf install mariadb mariadb-server```
+```sudo systemctl enable --now mariadb```
 
 
 Load the database:
 
-CREATE DATABASE student_management;
-USE student_management;
-SOURCE database.sql;
+``CREATE DATABASE student_management;``
+```USE student_management;```
+```SOURCE database.sql;```
 
-3️⃣ Run Java App
+#### 3️⃣ Run Java App
 Compile:
-javac -cp .:/usr/share/java/mysql-connector-java.jar *.java
+``` javac -cp .:/usr/share/java/mysql-connector-java.jar *.java ```
 
 Run:
-java -cp .:/usr/share/java/mysql-connector-java.jar MainWithDatabase
+```java -cp .:/usr/share/java/mysql-connector-java.jar``` MainWithDatabase
 
-4️⃣ Start PHP API Server
+#### 4️⃣ Start PHP API Server
 
 Inside project folder:
 
-php -S 127.0.0.1:8000
+```php -S 127.0.0.1:8000```
 
 
 This exposes:
 
 http://127.0.0.1:8000/api.php
 
-5️⃣ Open Web Interface
+#### 5️⃣ Open Web Interface
 
 Open:
 
 http://127.0.0.1:8000/index.html
 
-🖥 Java Output Example
+### 🖥 Java Output Example
 ========================================
 Student Management System with Database
 ========================================
@@ -173,51 +173,51 @@ Student Management System with Database
 5. View Class Statistics
 6. Exit
 
-🌐 Web UI Preview
+### 🌐 Web UI Preview
 
-Live student records
+- Live student records
 
-Real-time stats
+- Real-time stats
 
-Add/delete student
+- Add/delete student
 
-Fully responsive
+- Fully responsive
 
-Green badge when connected to MySQL
+- Green badge when connected to MySQL
 
-🧠 Skills Demonstrated
+### 🧠 Skills Demonstrated
 
-Java OOP
+1. Java OOP
 
-JDBC + MySQL integration
+2. JDBC + MySQL integration
 
-REST API development (PHP)
+3. REST API development (PHP)
 
-Frontend development with HTML/CSS/JS
+4. Frontend development with HTML/CSS/JS
 
-Database design
+5. Database design
 
-Full-stack application flow
+6. Full-stack application flow
 
-Fetch API + JSON handling
+7. Fetch API + JSON handling
 
-Debugging + environment setup
+8. Debugging + environment setup
 
-🔮 Future Enhancements
+### 🔮 Future Enhancements
 
-User authentication
+- User authentication
 
-Edit student feature
+- Edit student feature
 
-Export data to CSV/PDF
+- Export data to CSV/PDF
 
-Add more subjects dynamically
+- Add more subjects dynamically
 
-Build a Spring Boot backend
+- Build a Spring Boot backend
 
-Deploy online
+- Deploy online
 
-👩‍💻 Author
+#### 👩‍💻 Author
 
 Created by Sakshi Wadekar
 Full-Stack Java | Database | Web Development
