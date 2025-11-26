@@ -68,4 +68,16 @@ public class Student {
     public int getRollNumber() {
         return rollNumber;
     }
+    
+    public double getMathMarks() {
+        return mathMarks;
+    }
+    
+    public double getScienceMarks() {
+        return scienceMarks;
+    }
+    
+    public double getEnglishMarks() {
+        return englishMarks;
+    }
 }

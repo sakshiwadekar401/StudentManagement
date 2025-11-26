@@ -1,160 +1,223 @@
-# Student Management System
+📚 Student Management System (Full Stack Project)
 
-A simple Java-based Student Management System demonstrating core Object-Oriented Programming principles.
+A complete Full-Stack Student Management System built using Java, MySQL, PHP, HTML, CSS, and JavaScript.
+This project demonstrates OOP concepts, database integration, API development, and a modern responsive web UI.
 
-## Features
+✨ Features
+🖥 Java Application (Backend Logic)
 
-- **Student Data Management**: Store student information including name, roll number, and marks in three subjects
-- **Automatic Calculations**: Calculate total marks, average percentage, and letter grades
-- **Report Generation**: Display comprehensive student reports with formatted output
-- **OOP Implementation**: Demonstrates encapsulation, constructors, and methods
+Add, delete, view, and search students
 
-## Project Structure
+Fully OOP-structured (Student.java, DatabaseConnection.java)
 
-```
-student-management/
+JDBC integration using MySQL Connector
+
+Auto-calculation:
+
+Total marks
+
+Average %
+
+Grade (A+, A, B, C, D, F)
+
+🗄 MySQL / MariaDB Database
+
+Fully persistent database storage
+
+Table: students
+
+Stores all marks, totals, averages, and grade
+
+🌐 PHP REST API
+
+Handles all CRUD operations:
+
+GET /api.php?action=getAll
+
+POST /api.php?action=add
+
+POST /api.php?action=delete
+
+POST /api.php?action=deleteAll
+
+Used by the frontend to communicate with MySQL.
+
+🎨 Modern Frontend (HTML + CSS + JS)
+
+Dashboard-style UI
+
+Statistics cards (total students, average, highest & lowest score)
+
+Add student form
+
+Real-time rendering of database records
+
+Dynamic delete
+
+Responsive layout
+
+📁 Project Structure
+StudentManagement/
 │
-├── Student.java       # Student class with fields and methods
-├── Main.java          # Main class to run the program
-└── README.md          # Project documentation
-```
+├── Student.java                 # OOP class for student data
+├── DatabaseConnection.java      # JDBC MySQL connection class
+├── MainWithDatabase.java        # Java menu-driven system
+│
+├── database.sql                 # MySQL schema + sample data
+├── api.php                      # PHP API (CRUD operations)
+│
+├── index.html                   # Frontend UI
+├── style.css                    # Styling for UI
+├── scripts.js                   # JavaScript API calls & rendering
+│
+└── README.md                    # Project documentation
 
-## Student Class Components
+🧩 Student Class Details
+Fields
 
-### Fields
-- `name` - Student's full name
-- `rollNumber` - Unique student identifier
-- `mathMarks` - Mathematics marks (out of 100)
-- `scienceMarks` - Science marks (out of 100)
-- `englishMarks` - English marks (out of 100)
+name (String)
 
-### Methods
-- `calculateTotal()` - Returns sum of all marks
-- `calculateAverage()` - Returns average percentage
-- `calculateGrade()` - Returns letter grade (A+, A, B, C, D, F)
-- `displayReport()` - Prints formatted student report
+rollNumber (int)
 
-## Grading Scale
+mathMarks (double)
 
-| Average | Grade |
-|---------|-------|
-| 90-100  | A+    |
-| 80-89   | A     |
-| 70-79   | B     |
-| 60-69   | C     |
-| 50-59   | D     |
-| Below 50| F     |
+scienceMarks (double)
 
-## Prerequisites
+englishMarks (double)
 
-- Java Development Kit (JDK) 8 or higher
-- VS Code with Java Extension Pack (recommended for Fedora)
+Methods
 
-## Setup on Fedora
+calculateTotal()
 
-1. **Install JDK** (if not already installed):
-```bash
+calculateAverage()
+
+calculateGrade()
+
+Getters for all fields
+
+🧮 Grading Scale
+Average	Grade
+90–100	A+
+80–89	A
+70–79	B
+60–69	C
+50–59	D
+< 50	F
+🛠 Prerequisites
+Software needed
+
+JDK 17+
+
+PHP 8+
+
+MySQL / MariaDB
+
+DBeaver (optional UI viewer)
+
+VS Code (for editing)
+
+⚙️ Setup Instructions
+1️⃣ Install Java (Fedora)
 sudo dnf install java-latest-openjdk java-latest-openjdk-devel
-```
 
-2. **Verify installation**:
-```bash
+
+Check:
+
 java --version
 javac --version
-```
 
-3. **Install VS Code** (if needed):
-```bash
-sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
-sudo dnf check-update
-sudo dnf install code
-```
+2️⃣ Install MySQL / MariaDB
+sudo dnf install mariadb mariadb-server
+sudo systemctl enable --now mariadb
 
-4. **Install Java Extension Pack in VS Code**:
-   - Open VS Code
-   - Go to Extensions (Ctrl+Shift+X)
-   - Search for "Extension Pack for Java"
-   - Click Install
 
-## How to Run
+Load the database:
 
-### Using Command Line:
+CREATE DATABASE student_management;
+USE student_management;
+SOURCE database.sql;
 
-1. **Navigate to project directory**:
-```bash
-cd ~/home-projects/student-management
-```
+3️⃣ Run Java App
+Compile:
+javac -cp .:/usr/share/java/mysql-connector-java.jar *.java
 
-2. **Compile the Java files**:
-```bash
-javac Student.java Main.java
-```
+Run:
+java -cp .:/usr/share/java/mysql-connector-java.jar MainWithDatabase
 
-3. **Run the program**:
-```bash
-java Main
-```
+4️⃣ Start PHP API Server
 
-### Using VS Code:
+Inside project folder:
 
-1. Open the project folder in VS Code
-2. Open `Main.java`
-3. Click the "Run" button above the main method
-4. View output in the integrated terminal
+php -S 127.0.0.1:8000
 
-## Expected Output
 
-```
-Welcome to Student Management System!
-=====================================
+This exposes:
 
-========== STUDENT REPORT ==========
-Name: Rahul Sharma
-Roll Number: 101
-------------------------------------
-Mathematics: 85.5
-Science: 92.0
-English: 88.5
-------------------------------------
-Total Marks: 266.0 / 300
-Average: 88.67%
-Grade: A
-====================================
-```
+http://127.0.0.1:8000/api.php
 
-## Customization
+5️⃣ Open Web Interface
 
-You can easily modify the program to:
-- Add more subjects
-- Change the grading scale
-- Add more student records
-- Implement data persistence
-- Create a GUI interface
+Open:
 
-## Skills Demonstrated
+http://127.0.0.1:8000/index.html
 
-- Class design and implementation
-- Encapsulation using private fields
-- Constructor usage
-- Method creation and implementation
-- Data type handling (String, int, double)
-- Conditional logic for grade calculation
-- Formatted output using System.out
+🖥 Java Output Example
+========================================
+Student Management System with Database
+========================================
 
-## Future Enhancements
+1. Add New Student
+2. View All Students
+3. Search Student by Roll Number
+4. Delete Student
+5. View Class Statistics
+6. Exit
 
-- Add file I/O for data persistence
-- Implement a menu-driven interface
-- Create multiple classes (Course, Teacher, etc.)
-- Add input validation
-- Build a graphical user interface (GUI)
-- Implement database connectivity
+🌐 Web UI Preview
 
-## Author
+Live student records
 
-Created as a demonstration of Java OOP principles
+Real-time stats
 
-## License
+Add/delete student
 
-Open source - feel free to use and modify for learning purposes
+Fully responsive
+
+Green badge when connected to MySQL
+
+🧠 Skills Demonstrated
+
+Java OOP
+
+JDBC + MySQL integration
+
+REST API development (PHP)
+
+Frontend development with HTML/CSS/JS
+
+Database design
+
+Full-stack application flow
+
+Fetch API + JSON handling
+
+Debugging + environment setup
+
+🔮 Future Enhancements
+
+User authentication
+
+Edit student feature
+
+Export data to CSV/PDF
+
+Add more subjects dynamically
+
+Build a Spring Boot backend
+
+Deploy online
+
+👩‍💻 Author
+
+Created by Sakshi Wadekar
+Full-Stack Java | Database | Web Development
