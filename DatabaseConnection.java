@@ -3,31 +3,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseConnection {
-    // UPDATED for your local MariaDB setup
-    private static final String URL = "jdbc:mysql://127.0.0.1:3306/student_management?useSSL=false&serverTimezone=UTC";
-    private static final String USER = "sakshi";
-    private static final String PASSWORD = "Sakshipw";
 
-    // Get database connection
+    // 🔧 CHANGED: JDBC URL (mysql → mariadb) + correct DB name
+    private static final String URL =
+        "jdbc:mariadb://localhost:3306/student_management";
+
+    private static final String USER = "studentuser";
+    private static final String PASSWORD = "student123";
+
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
-    // Test connection
     public static boolean testConnection() {
         try (Connection conn = getConnection()) {
             System.out.println("✅ Database connected successfully!");
             return true;
         } catch (SQLException e) {
             System.out.println("❌ Database connection failed!");
-            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
 
-    // Add student to database
     public static void addStudent(Student student) {
-        String sql = "INSERT INTO students (name, roll_number, math_marks, science_marks, english_marks, total_marks, average_marks, grade) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql =
+            "INSERT INTO students (name, roll_number, math_marks, science_marks, english_marks, total_marks, average_marks, grade) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -42,14 +44,13 @@ public class DatabaseConnection {
             pstmt.setString(8, student.calculateGrade());
 
             pstmt.executeUpdate();
-            System.out.println("✅ Student added to database successfully!");
+            System.out.println("✅ Student added successfully!");
 
         } catch (SQLException e) {
-            System.out.println("❌ Error adding student: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    // Get all students from database
     public static List<Student> getAllStudents() {
         List<Student> students = new ArrayList<>();
         String sql = "SELECT * FROM students ORDER BY average_marks DESC";
@@ -59,23 +60,22 @@ public class DatabaseConnection {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                String name = rs.getString("name");
-                int rollNumber = rs.getInt("roll_number");
-                double math = rs.getDouble("math_marks");
-                double science = rs.getDouble("science_marks");
-                double english = rs.getDouble("english_marks");
-
-                students.add(new Student(name, rollNumber, math, science, english));
+                students.add(new Student(
+                    rs.getString("name"),
+                    rs.getInt("roll_number"),
+                    rs.getDouble("math_marks"),
+                    rs.getDouble("science_marks"),
+                    rs.getDouble("english_marks")
+                ));
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Error retrieving students: " + e.getMessage());
+            e.printStackTrace();
         }
 
         return students;
     }
 
-    // Get student by roll number
     public static Student getStudentByRoll(int rollNumber) {
         String sql = "SELECT * FROM students WHERE roll_number = ?";
 
@@ -96,13 +96,12 @@ public class DatabaseConnection {
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Error finding student: " + e.getMessage());
+            e.printStackTrace();
         }
 
         return null;
     }
 
-    // Delete student
     public static void deleteStudent(int rollNumber) {
         String sql = "DELETE FROM students WHERE roll_number = ?";
 
@@ -110,22 +109,17 @@ public class DatabaseConnection {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, rollNumber);
-            int rows = pstmt.executeUpdate();
-
-            if (rows > 0) {
-                System.out.println("✅ Student deleted successfully!");
-            } else {
-                System.out.println("❌ Student not found.");
-            }
+            pstmt.executeUpdate();
 
         } catch (SQLException e) {
-            System.out.println("❌ Error deleting student: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    // Get class statistics
     public static void displayStatistics() {
-        String sql = "SELECT COUNT(*) as total, MAX(total_marks) as highest, MIN(total_marks) as lowest, AVG(average_marks) as avg FROM students";
+        String sql =
+            "SELECT COUNT(*) AS total, MAX(total_marks) AS highest, " +
+            "MIN(total_marks) AS lowest, AVG(average_marks) AS avg FROM students";
 
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement();
@@ -133,15 +127,16 @@ public class DatabaseConnection {
 
             if (rs.next()) {
                 System.out.println("\n========== CLASS STATISTICS ==========");
-                System.out.println("Total Students: " + rs.getInt("total"));
-                System.out.println("Highest Score: " + rs.getDouble("highest"));
-                System.out.println("Lowest Score: " + rs.getDouble("lowest"));
-                System.out.println("Class Average: " + String.format("%.2f", rs.getDouble("avg")) + "%");
-                System.out.println("======================================\n");
+                System.out.println("Total Students : " + rs.getInt("total"));
+                System.out.println("Highest Score  : " + rs.getDouble("highest"));
+                System.out.println("Lowest Score   : " + rs.getDouble("lowest"));
+                System.out.println("Class Average  : " +
+                    String.format("%.2f", rs.getDouble("avg")));
+                System.out.println("====================================\n");
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Error getting statistics: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

@@ -1,0 +1,11 @@
+# Java build files
+*.class
+
+# JAR files
+*.jar
+
+# OS files
+.DS_Store
+
+# Logs
+*.log

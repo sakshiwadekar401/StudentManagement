@@ -1,114 +1,181 @@
-import java.util.List;
-import java.util.Scanner;
+const API_URL = "http://localhost:8000/api.php";
 
-public class MainWithDatabase {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        
-        System.out.println("========================================");
-        System.out.println("Student Management System with Database");
-        System.out.println("========================================\n");
-        
-        // Test database connection first
-        if (!DatabaseConnection.testConnection()) {
-            System.out.println("\n⚠️  Please check your database settings in DatabaseConnection.java");
-            System.out.println("Make sure MySQL is running and credentials are correct.");
-            return;
-        }
-        
-        while (true) {
-            System.out.println("\n=== MENU ===");
-            System.out.println("1. Add New Student");
-            System.out.println("2. View All Students");
-            System.out.println("3. Search Student by Roll Number");
-            System.out.println("4. Delete Student");
-            System.out.println("5. View Class Statistics");
-            System.out.println("6. Exit");
-            System.out.print("\nEnter your choice: ");
-            
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
-            
-            switch (choice) {
-                case 1:
-                    addNewStudent(scanner);
-                    break;
-                case 2:
-                    viewAllStudents();
-                    break;
-                case 3:
-                    searchStudent(scanner);
-                    break;
-                case 4:
-                    deleteStudent(scanner);
-                    break;
-                case 5:
-                    DatabaseConnection.displayStatistics();
-                    break;
-                case 6:
-                    System.out.println("\nThank you for using Student Management System!");
-                    scanner.close();
-                    System.exit(0);
-                default:
-                    System.out.println("\n❌ Invalid choice! Please try again.");
-            }
-        }
-    }
-    
-    private static void addNewStudent(Scanner scanner) {
-        System.out.println("\n=== ADD NEW STUDENT ===");
-        
-        System.out.print("Enter name: ");
-        String name = scanner.nextLine();
-        
-        System.out.print("Enter roll number: ");
-        int rollNumber = scanner.nextInt();
-        
-        System.out.print("Enter Mathematics marks (0-100): ");
-        double math = scanner.nextDouble();
-        
-        System.out.print("Enter Science marks (0-100): ");
-        double science = scanner.nextDouble();
-        
-        System.out.print("Enter English marks (0-100): ");
-        double english = scanner.nextDouble();
-        
-        Student student = new Student(name, rollNumber, math, science, english);
-        DatabaseConnection.addStudent(student);
-        
-        student.displayReport();
-    }
-    
-    private static void viewAllStudents() {
-        System.out.println("\n=== ALL STUDENTS ===");
-        List<Student> students = DatabaseConnection.getAllStudents();
-        
-        if (students.isEmpty()) {
-            System.out.println("No students found in database.");
+/* =========================
+   PAGE LOAD
+========================= */
+window.addEventListener("load", () => {
+    checkConnection();
+    loadStudents();
+});
+
+/* =========================
+   CHECK DATABASE CONNECTION
+========================= */
+async function checkConnection() {
+    try {
+        const response = await fetch(`${API_URL}?action=getAll`);
+        if (response.ok) {
+            document.getElementById("connectionStatus").textContent =
+                "✅ Connected to Database";
+            document.getElementById("connectionStatus").classList.remove("error");
         } else {
-            for (Student student : students) {
-                student.displayReport();
-            }
+            throw new Error();
         }
+    } catch {
+        document.getElementById("connectionStatus").textContent =
+            "❌ Database Connection Failed";
+        document.getElementById("connectionStatus").classList.add("error");
     }
-    
-    private static void searchStudent(Scanner scanner) {
-        System.out.print("\nEnter roll number to search: ");
-        int rollNumber = scanner.nextInt();
-        
-        Student student = DatabaseConnection.getStudentByRoll(rollNumber);
-        
-        if (student != null) {
-            student.displayReport();
+}
+
+/* =========================
+   LOAD STUDENTS FROM DB
+========================= */
+async function loadStudents() {
+    try {
+        const response = await fetch(`${API_URL}?action=getAll`);
+        const students = await response.json();
+        renderStudents(students);
+        updateStats(students);
+    } catch (error) {
+        console.error(error);
+        document.getElementById("studentList").innerHTML =
+            "<p style='color:red'>Failed to load students</p>";
+    }
+}
+
+/* =========================
+   ADD STUDENT
+========================= */
+document.getElementById("studentForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const student = {
+        name: document.getElementById("name").value,
+        rollNumber: parseInt(document.getElementById("rollNumber").value),
+        mathMarks: parseFloat(document.getElementById("math").value),
+        scienceMarks: parseFloat(document.getElementById("science").value),
+        englishMarks: parseFloat(document.getElementById("english").value),
+    };
+
+    try {
+        const response = await fetch(`${API_URL}?action=add`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(student),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            alert("✅ Student added successfully!");
+            document.getElementById("studentForm").reset();
+            loadStudents(); // 🔥 THIS refreshes UI from DB
         } else {
-            System.out.println("❌ Student with roll number " + rollNumber + " not found.");
+            alert("❌ Error: " + result.error);
         }
+    } catch (error) {
+        console.error(error);
+        alert("❌ Server error");
     }
-    
-    private static void deleteStudent(Scanner scanner) {
-        System.out.print("\nEnter roll number to delete: ");
-        int rollNumber = scanner.nextInt();
-        
-        DatabaseConnection.deleteStudent(rollNumber);
+});
+
+/* =========================
+   RENDER STUDENTS ON UI
+========================= */
+function renderStudents(students) {
+    const container = document.getElementById("studentList");
+
+    if (students.length === 0) {
+        container.innerHTML = "<p>No students found</p>";
+        return;
     }
+
+    container.innerHTML = students
+        .map(
+            (s) => `
+        <div class="student-card">
+            <h3>${s.name}</h3>
+            <p>Roll: ${s.roll_number}</p>
+            <p>Math: ${s.math_marks}</p>
+            <p>Science: ${s.science_marks}</p>
+            <p>English: ${s.english_marks}</p>
+            <p>Total: ${s.total_marks}</p>
+            <p>Average: ${parseFloat(s.average_marks).toFixed(2)}%</p>
+            <p>Grade: ${s.grade}</p>
+            <button onclick="deleteStudent(${s.roll_number})">🗑 Delete</button>
+        </div>
+    `
+        )
+        .join("");
+}
+
+/* =========================
+   DELETE ONE STUDENT
+========================= */
+async function deleteStudent(rollNumber) {
+    if (!confirm("Delete this student?")) return;
+
+    try {
+        const response = await fetch(`${API_URL}?action=delete`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ rollNumber }),
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert("✅ Student deleted");
+            loadStudents();
+        } else {
+            alert("❌ Delete failed");
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+/* =========================
+   DELETE ALL STUDENTS
+========================= */
+async function clearAll() {
+    if (!confirm("Delete ALL students?")) return;
+
+    try {
+        const response = await fetch(`${API_URL}?action=deleteAll`, {
+            method: "POST",
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert("✅ All students deleted");
+            loadStudents();
+        } else {
+            alert("❌ Failed to clear data");
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+/* =========================
+   UPDATE STATISTICS
+========================= */
+function updateStats(students) {
+    const total = students.length;
+    document.getElementById("totalStudents").textContent = total;
+
+    if (total === 0) {
+        document.getElementById("avgScore").textContent = "0";
+        document.getElementById("highestScore").textContent = "0";
+        document.getElementById("lowestScore").textContent = "0";
+        return;
+    }
+
+    const totals = students.map((s) => parseFloat(s.total_marks));
+    const avg = totals.reduce((a, b) => a + b, 0) / total;
+
+    document.getElementById("avgScore").textContent = avg.toFixed(1);
+    document.getElementById("highestScore").textContent = Math.max(...totals);
+    document.getElementById("lowestScore").textContent = Math.min(...totals);
 }
