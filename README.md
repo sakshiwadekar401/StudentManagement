@@ -1,78 +1,115 @@
-# 📚 Student Management System (Full Stack Project)
+Student Management System — Full Stack Project
 
-A complete Full-Stack Student Management System built using Java, MySQL, PHP, HTML, CSS, and JavaScript.
-This project demonstrates OOP concepts, database integration, API development, and a modern responsive web UI.
+A full-stack Student Management System built to understand how frontend, backend, and database work together in a real application.
 
-## ✨ Features
-🖥 Java Application (Backend Logic)
+This project combines:
 
-Add, delete, view, and search students
+a Java console application (for core OOP + JDBC practice)
 
-Fully OOP-structured (Student.java, DatabaseConnection.java)
+a PHP-based backend API
 
-JDBC integration using MySQL Connector
+a web frontend (HTML, CSS, JavaScript)
 
-Auto-calculation:
+a MariaDB/MySQL database
+
+The goal of this project was not just UI, but end-to-end data flow — from user input to database and back.
+
+✨ Key Features
+🖥 Java Application (OOP + JDBC)
+
+Menu-driven console application
+
+Add, view, search, and delete students
+
+Clean OOP structure using Student class
+
+JDBC integration with MySQL/MariaDB
+
+Automatic calculation of:
 
 Total marks
 
-Average %
+Average percentage
 
 Grade (A+, A, B, C, D, F)
 
-## 🗄 MySQL / MariaDB Database
+This part focuses on Java fundamentals and database connectivity.
 
-Fully persistent database storage
+🌐 Web Application (Frontend + PHP Backend)
+
+Modern dashboard-style UI
+
+Add students through web form
+
+View all students stored in database
+
+Delete individual or all records
+
+Real-time statistics:
+
+Total students
+
+Highest score
+
+Lowest score
+
+Average score
+
+UI updates dynamically without page reload
+
+The web app uses JavaScript Fetch API to communicate with the backend.
+
+🗄 Database (MySQL / MariaDB)
+
+Persistent relational database
+
+Database name: student_management
 
 Table: students
 
-Stores all marks, totals, averages, and grade
+Stores:
 
-## 🌐 PHP REST API
+Student details
 
-Handles all CRUD operations:
+Subject marks
 
-GET /api.php?action=getAll
+Total, average, and grade
 
-POST /api.php?action=add
+Constraints to ensure valid data
 
-POST /api.php?action=delete
+🔌 PHP Backend API
 
-POST /api.php?action=deleteAll
+The PHP file acts as a REST-style API between the frontend and database.
 
-Used by the frontend to communicate with MySQL.
+Available endpoints:
 
-## 🎨 Modern Frontend (HTML + CSS + JS)
+GET /api.php?action=getAll → fetch all students
 
-Dashboard-style UI
+POST /api.php?action=add → add a student
 
-Statistics cards (total students, average, highest & lowest score)
+POST /api.php?action=delete → delete one student
 
-Add student form
+POST /api.php?action=deleteAll → delete all students
 
-Real-time rendering of database records
+All communication is done using JSON.
 
-Dynamic delete
-
-Responsive layout
-
-## 📁 Project Structure
+📁 Project Structure
 StudentManagement/
 │
-├── Student.java                 # OOP class for student data
-├── DatabaseConnection.java      # JDBC MySQL connection class
-├── MainWithDatabase.java        # Java menu-driven system
+├── Student.java                 # Student OOP class
+├── DatabaseConnection.java      # JDBC database connection
+├── MainWithDatabase.java        # Java console application
 │
-├── database.sql                 # MySQL schema + sample data
-├── api.php                      # PHP API (CRUD operations)
+├── database.sql                 # Database schema + sample data
+├── api.php                      # PHP backend API
 │
-├── index.html                   # Frontend UI
-├── style.css                    # Styling for UI
-├── scripts.js                   # JavaScript API calls & rendering
+├── index.html                   # Web UI
+├── style.css                    # UI styling
+├── scripts.js                   # Frontend logic (Fetch + rendering)
 │
-└── README.md                    # Project documentation
+└── README.md                    # Documentation
 
-## 🧩 Student Class Details
+🧩 Student Class (Java)
 Fields
 
 name (String)
@@ -93,131 +130,114 @@ calculateAverage()
 
 calculateGrade()
 
-Getters for all fields
+Getter methods for all fields
 
-## 🧮 Grading Scale
-Average	Grade
+🧮 Grading Logic
+Average (%)	Grade
 90–100	A+
 80–89	A
 70–79	B
 60–69	C
 50–59	D
 < 50	F
-🛠 Prerequisites
-Software needed
+🛠 Tech Stack
+Frontend
 
-JDK 17+
+HTML
 
-PHP 8+
+CSS
+
+JavaScript (Fetch API)
+
+Backend
+
+PHP (REST-style API)
+
+Java (OOP + JDBC)
+
+Database
 
 MySQL / MariaDB
 
-DBeaver (optional UI viewer)
+Tools & Environment
 
-VS Code (for editing)
+VS Code
 
-## ⚙️ Setup Instructions
-#### 1️⃣ Install Java (Fedora)
-```sudo dnf install java-latest-openjdk java-latest-openjdk-devel```
+Linux (Fedora/Ultramarine)
 
+Git & GitHub
 
-Check:
+PHP built-in server
 
-```java --version```
-```javac --version```
+⚙️ Setup Instructions
+1️⃣ Database Setup
+CREATE DATABASE student_management;
+USE student_management;
+SOURCE database.sql;
 
-#### 2️⃣ Install MySQL / MariaDB
-```sudo dnf install mariadb mariadb-server```
-```sudo systemctl enable --now mariadb```
+2️⃣ Run Java Application
 
-
-Load the database:
-
-``CREATE DATABASE student_management;``
-```USE student_management;```
-```SOURCE database.sql;```
-
-#### 3️⃣ Run Java App
 Compile:
-``` javac -cp .:/usr/share/java/mysql-connector-java.jar *.java ```
+
+javac *.java
+
 
 Run:
-```java -cp .:/usr/share/java/mysql-connector-java.jar``` MainWithDatabase
 
-#### 4️⃣ Start PHP API Server
+java MainWithDatabase
 
-Inside project folder:
+3️⃣ Start PHP Backend
 
-```php -S 127.0.0.1:8000```
+Inside project directory:
+
+php -S localhost:8000
 
 
-This exposes:
+Backend endpoint:
 
-http://127.0.0.1:8000/api.php
+http://localhost:8000/api.php
 
-#### 5️⃣ Open Web Interface
+4️⃣ Open Web Application
 
-Open:
+Open in browser:
 
-http://127.0.0.1:8000/index.html
+http://localhost:8000/index.html
 
-### 🖥 Java Output Example
-========================================
-Student Management System with Database
-========================================
+🧠 What This Project Demonstrates
 
-1. Add New Student
-2. View All Students
-3. Search Student by Roll Number
-4. Delete Student
-5. View Class Statistics
-6. Exit
+Java OOP concepts
 
-### 🌐 Web UI Preview
+JDBC and SQL integration
 
-- Live student records
+PHP backend development
 
-- Real-time stats
+REST-style API communication
 
-- Add/delete student
+Frontend–backend integration
 
-- Fully responsive
+Asynchronous JavaScript (Fetch API)
 
-- Green badge when connected to MySQL
+Real-time UI updates from database
 
-### 🧠 Skills Demonstrated
+Debugging full-stack issues
 
-1. Java OOP
+Version control using GitHub
 
-2. JDBC + MySQL integration
+🔮 Possible Future Improvements
 
-3. REST API development (PHP)
+User authentication
 
-4. Frontend development with HTML/CSS/JS
+Edit/update student records
 
-5. Database design
+Pagination & search filters
 
-6. Full-stack application flow
+Export data to CSV/PDF
 
-7. Fetch API + JSON handling
+Spring Boot backend
 
-8. Debugging + environment setup
+Deployment to cloud
 
-### 🔮 Future Enhancements
+👩‍💻 Author
 
-- User authentication
-
-- Edit student feature
-
-- Export data to CSV/PDF
-
-- Add more subjects dynamically
-
-- Build a Spring Boot backend
-
-- Deploy online
-
-#### 👩‍💻 Author
-
-Created by Sakshi Wadekar
-Full-Stack Java | Database | Web Development
+Sakshi Wadekar
+Full-Stack Development | Java | Databases | Web Technologies
