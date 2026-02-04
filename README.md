@@ -127,7 +127,7 @@ StudentManagement/
 - Java (OOP + JDBC)
 
 **Database**
-- MySQL / MariaDB
+- MariaDB
 
 **Tools**
 - VS Code
